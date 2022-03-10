@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container alert alert-danger">
+    <h3>Update Post</h3>
+    <label>Title is {{post_obj.title}}</label><br>
+    <label>Description is {{post_obj.description}}</label><br><br>
+    <form action="{% url 'update' post_obj.slug %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name = 'image'><br><br>
+        <input type="text" name="title" placeholder="Enter Title" value="{{post_obj.title}}"><br><br>
+        <input type="text" name="description" placeholder="Enter Description" value="{{post_obj.description}}"><br><br>
+        <button type="submit">Update</button><br><br>
+        
+    </form>
+    <a href="{% url 'showlist' %}">Back</a>
+</div>    
+
+{% endblock content %}

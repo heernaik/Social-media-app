@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<br>
+<div class="container alert alert-danger">
+    <h1>Group Posts</h1>
+    <form action="{% url 'showlist' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="q" placeholder="search by title">
+        <button type="submit">Search</button><br>
+    </form>
+    <br>
+    <br>
+    {% for post in post_list %}
+        <img src="{{ post.thumbnail.url }}" width="100" height="60"><br>
+        {{post.title}}<br>
+        {{post.description}}<br>
+        Created By: {{post.user_key.username}}<br>
+        Created At: {{post.created_at}}<br><br>
+        Group: {{post.group_key}}<br><br>
+        <button class="like">
+            <a href="{% url 'likeview' post.id  %}"><i class="fa fa-thumbs-o-up" aria-hidden="true"> </i></a>
+        </button>
+        {% if post.like_key.all.count != 0 %}
+        {{post.like_key.all.count}}
+        {% endif %}
+
+        <button class="dislike">
+            <a href="{% url 'dislikeview' post.id  %}"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+        </button>
+        {% if post.dislike_key.all.count != 0 %}
+            {{post.dislike_key.all.count}}
+        {% endif %}
+        <br><br>
+
+
+        <label>Comments: </label><br>
+        {% for comment in comment_data %}
+        {% if comment.post_key.id == post.id %}
+            <div>{{ comment.comment }}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -Commented By {{comment.created_by}} at {{comment.created_at}} </span> <button class="like">
+                <a href="{% url 'commentlike' comment.id  %}"><i class="fa fa-thumbs-o-up" aria-hidden="true"> </i></a>
+            </button>{{comment.liked_by.all.count}}</div>
+        {% endif %}    
+        {% endfor %}
+        <br>
+        
+        {% if request.user in group_data.user_key.all %}
+        <form method="POST" action="{% url 'comment' post.id %}">
+            {% csrf_token %}
+            
+            <input type="text" name="comment" placeholder="Type your comment here...">
+            <button type="submit">Add Comment</button>
+        </form><br>
+        {% endif %}
+
+       
+
+        {% if post.user_key == request.user %}
+        <a href="{% url 'update' post.slug %}">Update</a><br>
+        <a href="{% url 'delete' post.id %}">Delete</a>
+        {% endif %}
+        <hr>
+    {% endfor %}
+
+</div>   
+{% endblock content %}    
+    
+
+

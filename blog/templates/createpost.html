@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid alert alert-success">
+    <h3>Create New Post</h3>
+    <form action="{% url 'createpost' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Upload Image for Post</label>
+        <input type="file" name = 'image'><br><br>
+        <label>Post Title</label>
+        <input type="text" name="title" placeholder="Enter Title"><br><br>
+        <label>Post Description</label>
+        <input type="text" name="description" placeholder="Enter Description"><br><br>
+        <button type="submit">Create Post</button><br>
+        
+    </form><br>
+    <a href="{% url 'showlist' %}">Back</a>
+    
+</div>   
+{% endblock content %}    

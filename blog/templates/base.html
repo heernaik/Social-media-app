@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      input[type='text'] {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+      }
+      button{
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+      }
+      
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'showlist' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+
+            {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'createpost' %}">Create Post</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'showlist' %}">Show all Posts &nbsp;<span class="badge badge-dark">{{ total_count }}</span></a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'group' %}">Groups</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'settings' %}">Settings</a>
+            </li>
+
+            {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link"> Welcome {{request.user}}!</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link">Welcome Guest!</a>
+            </li>
+            {% endif %}
+
+            {% if request.user.is_authenticated %}
+            <li class="nav-item" style="margin-left: 700px;">
+              <form id="my_form" action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+              </form>
+              <a href="javascript:{}" onclick="document.getElementById('my_form').submit();"style="margin-left:10px; text-decoration:none;"> Logout </a>
+            </li>
+            {% else %}
+            <li class="nav-item" style="margin-left: 900px;">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+            {% endif %}
+            
+          </ul>
+          
+        </div>
+      </nav>
+
+    {% block content %}
+
+    <h3>Welcome to my Blog!</h3>
+
+    {% endblock content %}
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<div class="container-fluid">
+    <h2>Welcome To {{grp_obj.name}} Admin Panel!</h2><br>
+    <div>
+        <p>Existing Group Members List:</p>
+        <ul>
+            {% for user in grp_obj.user_key.all %}
+            <li>{{user}}</li>
+            {% endfor %}
+        </ul>
+        <p>Request User List:</p>
+        <form action="{% url 'admin_panel' grp_obj.id %}" method="POST">
+            {% csrf_token %}
+            {% for request in join_obj %}
+            <input type="checkbox" id="username" name="checks[]" value="{{request.user_key.id}}">
+            <label for="username">{{request.user_key}}</label><br>
+            {% endfor %}
+            <input type="submit" value="Submit">
+          </form>
+    </div>
+</div>
+{% endblock %}

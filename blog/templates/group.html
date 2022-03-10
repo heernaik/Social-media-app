@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+    <div class="container" style="display: inline-block; text-align: right;">
+        <button class="btn btn-dark"><a href="{% url 'creategroup' %}" style="text-decoration: none;">Create Group</a></button>
+    </div>
+    {% for group in group_obj %}
+    <br><br>
+    
+    <div class="container alert alert-danger">
+        <h4>Group Name: {{group.name}}</h4>
+        <h5>Total Number of Group Members: {{group.user_key.count}}</h5><br>
+        <a href="{% url 'showgroup' group.slug %}">Group Activity</a><br><br>
+
+        {% if request.user in group.admin_user.all %}
+        <a href="{% url 'admin_panel' group.id %}">Go to Admin Panel</a><br><br>
+        {% endif %}
+        {% if request.user == group.groupjoinrequest_set.all.0.user_key  %}
+            pending
+        {% elif request.user in group.user_key.all %}
+            <a href="{% url 'unfollow' group.id %}">Unfollow</a>
+        {% else %}    
+        <a href="{% url 'follow' group.id %}">follow</a>
+        {% endif %}
+        <hr>
+    </div>    
+    {% endfor %}
+{% endblock %}

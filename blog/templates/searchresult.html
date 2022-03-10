@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+    <h1>Search result</h1>
+    <div>
+        {% for post in queryset %}
+            {{ post.title }}
+            <br>
+        {% endfor %}
+    </div>
+    
+{% endblock content %}    

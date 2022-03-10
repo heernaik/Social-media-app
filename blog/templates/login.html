@@ -1,0 +1,29 @@
+<html>
+    {% url 'login' as login_url %}
+    {% if request.path == login_url %}
+    <h2>Login</h2><a href="{% url 'register' %}">Register</a>
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username"><br><br>
+            <input type="password" name="password" placeholder="Password"><br><br>
+            <button type="submit">Login</button>
+
+        </form>
+    </div >
+    {% else %}
+    <h2>Register</h2>
+    <div>
+        <form method="POST" action="{% url 'register' %}">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username"><br><br>
+            <input type="text" name="email" placeholder="email"><br><br>
+            <input type="password" name="password" placeholder="Password"><br><br>
+            <button type="submit">Register</button>
+        </form>
+    </div >
+
+
+    {% endif %}
+    
+</html>
